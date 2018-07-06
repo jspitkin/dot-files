@@ -1,9 +1,9 @@
 let g:netrw_dirhistmax  =10
 let g:netrw_dirhist_cnt =7
-let g:netrw_dirhist_1='/Users/jsp/homework/hw3/OnlineNewsPopularity'
-let g:netrw_dirhist_2='/Users/jsp/CS6017'
-let g:netrw_dirhist_3='/Users/jsp/CS6017/homeworks'
-let g:netrw_dirhist_4='/Users/jsp/CS6017'
+let g:netrw_dirhist_1='/Users/jsp/tmp/spring2018'
+let g:netrw_dirhist_2='/Users/jsp/tmp/spring2018/ai'
+let g:netrw_dirhist_3='/Users/jsp/tmp/spring2018/ai/p4'
+let g:netrw_dirhist_4='/Users/jsp/tmp/spring2018/ai/p4/tracking'
 let g:netrw_dirhist_5='/Users/jsp'
-let g:netrw_dirhist_6='/Users/jsp/tiny_knife'
-let g:netrw_dirhist_7='/Users/jsp/.vim/plugged'
+let g:netrw_dirhist_6='/Users/jsp/.oracle_jre_usage'
+let g:netrw_dirhist_7='/Users/jsp'
