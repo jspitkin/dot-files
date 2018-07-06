@@ -1,76 +1,85 @@
-" plugins
+" Plugins
 call plug#begin('~/.vim/plugged')
 
 Plug 'Yggdroot/indentLine'
+Plug 'google/vim-searchindex'
 
 call plug#end()
 
-" color scheme
+" Color scheme
 syntax enable
 set background=dark
 colorscheme lettuce
 
-" add new vertical split to the right or below
+" Add new vertical split to the right or below
 set splitright
 set splitbelow
 
-" key mappings
+""" Key mappings
 let mapleader = ","
-" pane navigation
+" Pane navigation
 nnoremap <C-J> <C-W><C-J>
 nnoremap <C-K> <C-W><C-K>
 nnoremap <C-L> <C-W><C-L>
 nnoremap <C-H> <C-W><C-H>
-" saving and closing the buffer
+" Saving and closing the buffer
 nmap <leader>s :w<CR>
 nmap <leader>w :q<CR>
 nmap <leader>sw :wq!<CR>
-" scrolling to wrapped lines
+" Scrolling to wrapped lines
 noremap j gj
 noremap k gk
-" visual shifting (does not exit Visual mode)
+" Visual shifting (does not exit Visual mode)
 vnoremap < <gv
 vnoremap > >gv
-" better horizontal scrolling
+" Better horizontal scrolling
 map zl zL
 map zh ZH
+" Paste on line below
+nmap P :pu<CR>
 
-" misc
-set wildmode=full " file explorer
-set clipboard=unnamed " share clipboards
-set encoding=utf-8 " text encoding
-set nu " line numbers
-set backspace=indent,eol,start " make backspace work normally
-set mouse=a " enable mouse usage
-set mousehide " hide mouse when typing
+""" Misc
+set wildmode=full " File explorer
+set clipboard=unnamed " Share clipboards
+set encoding=utf-8 " Text encoding
+set nu " Line numbers
+set backspace=indent,eol,start " Make backspace work normally
+set mouse=a " Enable mouse usage
+set mousehide " Hide mouse when typing
 set scrolljump=5 " Scroll 5 lines when cursor leaves screen
 set scrolloff=3 " Minimum lines to keep above and below the cursor
-set showmatch
+set showmatch " Show matching brackets and paren
+" Retain cursor position after a yank
+vmap y ygv<Esc>
+" Remove help menu
+nmap <F1> <nop> 
+nmap <Help> <nop>
+let g:indentLine_char = '│' " Use a bar for indent guide
+set shortmess+=A " Disable swap file messages
 
-" formatting
+" Formatting
 set nowrap
-set autoindent " auto tab on a new line in code blocks
-set shiftwidth=2 " indenting of 2 spaces
-set expandtab " replace tabs with spaces
-set softtabstop=2 " backspace deletes indent
-set tabstop=2 " indentation every two columns
+set autoindent " Auto tab on a new line in code blocks
+set shiftwidth=2 " Indenting of 2 spaces
+set expandtab " Replace tabs with spaces
+set softtabstop=2 " Backspace deletes indent
+set tabstop=2 " Indentation every two columns
 
-" status line
+" Status line
 set laststatus=2
-set statusline=%y\ %.80F " path and file type
-set statusline+=%=        " switch to the right side
-set statusline+=Ln\ %4l\ Col\ %4c  " line number and column number
+set statusline=%y\ %.80F " Path and file type
+set statusline+=%=        " Switch to the right side
+set statusline+=Ln\ %4l\ Col\ %4c  " Line number and column number
 
-" searching 
+""" Searching 
 set path+=**
-set wildmenu " show list
+set wildmenu " Show list
 set wildmode=list:longest,full " Command <Tab> completion
-set hlsearch " highlight search terms
-set incsearch " find as you type in search
-set ignorecase "case insensitive search
-set smartcase " case sensitive when uppercase present
+set hlsearch " Highlight search terms
+set incsearch " Find as you type in search
+set ignorecase " Case insensitive search
+set smartcase " Case sensitive when uppercase present
 noremap <CR> :noh<CR><CR>
-
 
 " Restore cursor to file position in previous editing session
 function! ResCur()
@@ -85,7 +94,21 @@ augroup resCur
         autocmd BufWinEnter * call ResCur()
 augroup END
 
-" python
+" Find and replace if contains 'before' with 'after'
+function! s:FindAndReplace(before, after)
+  execute "%s/" . a:before . "/" . a:after . "/gc"
+endfunction
+" :Far <word to replace> <replace with>
+command! -nargs=* Far call s:FindAndReplace(<f-args>)
+
+" Find and replace exactly 'before with 'after'
+function! s:FindAndReplaceExact(before, after)
+  execute "%s/\\<" . a:before . "\\>/" . a:after . "/gc"
+endfunction
+" :Fare <word to replace> <replace with>
+command! -nargs=* Fare call s:FindAndReplaceExact(<f-args>)
+
+" Python
 au BufNewFile,BufRead *.py
 	\ set tabstop=4 |
 	\ set softtabstop=4 |
