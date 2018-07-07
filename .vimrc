@@ -101,7 +101,7 @@ endfunction
 " :Far <word to replace> <replace with>
 command! -nargs=* Far call s:FindAndReplace(<f-args>)
 
-" Find and replace exactly 'before with 'after'
+" Find and replace exactly 'before' with 'after'
 function! s:FindAndReplaceExact(before, after)
   execute "%s/\\<" . a:before . "\\>/" . a:after . "/gc"
 endfunction
