@@ -3,6 +3,9 @@ call plug#begin('~/.vim/plugged')
 
 Plug 'Yggdroot/indentLine'
 Plug 'google/vim-searchindex'
+Plug 'mileszs/ack.vim'
+Plug 'pangloss/vim-javascript'
+Plug 'mxw/vim-jsx'
 
 call plug#end()
 
@@ -10,6 +13,8 @@ call plug#end()
 syntax enable
 set background=dark
 colorscheme lettuce
+highlight Normal ctermbg=NONE
+highlight nonText ctermbg=NONE
 
 " Add new vertical split to the right or below
 set splitright
@@ -22,10 +27,6 @@ nnoremap <C-J> <C-W><C-J>
 nnoremap <C-K> <C-W><C-K>
 nnoremap <C-L> <C-W><C-L>
 nnoremap <C-H> <C-W><C-H>
-" Saving and closing the buffer
-nmap <leader>s :w<CR>
-nmap <leader>w :q<CR>
-nmap <leader>sw :wq!<CR>
 " Scrolling to wrapped lines
 noremap j gj
 noremap k gk
@@ -37,25 +38,8 @@ map zl zL
 map zh ZH
 " Paste on line below
 nmap P :pu<CR>
-
-""" Misc
-set wildmode=full " File explorer
-set clipboard=unnamed " Share clipboards
-set encoding=utf-8 " Text encoding
-set nu " Line numbers
-set backspace=indent,eol,start " Make backspace work normally
-set mouse=a " Enable mouse usage
-set mousehide " Hide mouse when typing
-set scrolljump=5 " Scroll 5 lines when cursor leaves screen
-set scrolloff=3 " Minimum lines to keep above and below the cursor
-set showmatch " Show matching brackets and paren
-" Retain cursor position after a yank
-vmap y ygv<Esc>
-" Remove help menu
-nmap <F1> <nop> 
-nmap <Help> <nop>
-let g:indentLine_char = '│' " Use a bar for indent guide
-set shortmess+=A " Disable swap file messages
+" Redo
+nnoremap U <C-R>
 
 " Formatting
 set nowrap
@@ -67,7 +51,7 @@ set tabstop=2 " Indentation every two columns
 
 " Status line
 set laststatus=2
-set statusline=%y\ %.80F " Path and file type
+set statusline=%y\ %.80f " Path and file type
 set statusline+=%=        " Switch to the right side
 set statusline+=Ln\ %4l\ Col\ %4c  " Line number and column number
 
@@ -81,38 +65,71 @@ set ignorecase " Case insensitive search
 set smartcase " Case sensitive when uppercase present
 noremap <CR> :noh<CR><CR>
 
+" The Silver Searcher
+if executable('ag')
+  " Use ag over grep
+  set grepprg=ag\ --nogroup\ --nocolor
+
+  " Use ag in CtrlP for listing files. Lightning fast and respects .gitignore
+  let g:ctrlp_user_command = 'ag %s -l --nocolor -g ""'
+
+  " ag is fast enough that CtrlP doesn't need to cache
+  let g:ctrlp_use_caching = 0
+endif
+nnoremap K :Ack! "\b<C-R><C-W>\b"<CR>:cw<CR>
+
+""" Misc
+set wildmode=full " File explorer
+set clipboard=unnamed " Share clipboards
+set encoding=utf-8 " Text encoding
+set nu " Line numbers
+set backspace=indent,eol,start " Make backspace work normally
+set mouse=a " Enable mouse usage
+set mousehide " Hide mouse when typing
+set scrolljump=5 " Scroll 5 lines when cursor leaves screen
+set scrolloff=3 " Minimum lines to keep above and below the cursor
+" Retain cursor position after a yank
+vmap y ygv<Esc>
+" Remove help menu
+nmap <F1> <nop> 
+nmap <Help> <nop>
+let g:indentLine_char = '│' " Use a bar for indent guide
+set shortmess+=A " Disable swap file messages
+set formatoptions-=cro " Disable comment marker on new line
+" Change end of buffer to terminal background color
+silent! set termwinkey=<C-H>
+
+""" File explorer
+let g:netrw_liststyle = 3 " File browser display preference
+let g:netrw_banner = 0 " Remove file browser banner
+
 " Restore cursor to file position in previous editing session
 function! ResCur()
-    if line("'\"") <= line("$")
-        silent! normal! g`"
-        return 1
-    endif
+  if line("'\"") <= line("$")
+    silent! normal! g`"
+    return 1
+  endif
 endfunction
 
 augroup resCur
-        autocmd!
-        autocmd BufWinEnter * call ResCur()
+  autocmd!
+  autocmd BufWinEnter * call ResCur()
 augroup END
 
 " Find and replace if contains 'before' with 'after'
 function! s:FindAndReplace(before, after)
+  let cur_line = line('.')
   execute "%s/" . a:before . "/" . a:after . "/gc"
+  execute cur_line
 endfunction
 " :Far <word to replace> <replace with>
 command! -nargs=* Far call s:FindAndReplace(<f-args>)
 
 " Find and replace exactly 'before' with 'after'
 function! s:FindAndReplaceExact(before, after)
+  let cur_line = line('.')
   execute "%s/\\<" . a:before . "\\>/" . a:after . "/gc"
+  execute cur_line
 endfunction
 " :Fare <word to replace> <replace with>
 command! -nargs=* Fare call s:FindAndReplaceExact(<f-args>)
-
-" Python
-au BufNewFile,BufRead *.py
-	\ set tabstop=4 |
-	\ set softtabstop=4 |
-	\ set shiftwidth=4 |
-	\ set expandtab |
-	\ set fileformat=unix
-let python_highlight_all=1
