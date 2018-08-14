@@ -1,32 +1,27 @@
-" Plugins
 call plug#begin('~/.vim/plugged')
 
 Plug 'Yggdroot/indentLine'
 Plug 'google/vim-searchindex'
 Plug 'mileszs/ack.vim'
 Plug 'pangloss/vim-javascript'
-Plug 'mxw/vim-jsx'
 
 call plug#end()
 
 " Color scheme
 syntax enable
 set background=dark
-colorscheme lettuce
-highlight Normal ctermbg=NONE
-highlight nonText ctermbg=NONE
-
-" Add new vertical split to the right or below
-set splitright
-set splitbelow
+let g:gruvbox_bold=0
+let g:gruvbox_dark_contrast="medium"
+colorscheme gruvbox
 
 """ Key mappings
 let mapleader = ","
 " Pane navigation
-nnoremap <C-J> <C-W><C-J>
-nnoremap <C-K> <C-W><C-K>
 nnoremap <C-L> <C-W><C-L>
 nnoremap <C-H> <C-W><C-H>
+" Buffer navigation
+nnoremap <C-J> :bnext<CR>
+nnoremap <C-K> :bprevious<CR>
 " Scrolling to wrapped lines
 noremap j gj
 noremap k gk
@@ -63,7 +58,7 @@ set hlsearch " Highlight search terms
 set incsearch " Find as you type in search
 set ignorecase " Case insensitive search
 set smartcase " Case sensitive when uppercase present
-noremap <CR> :noh<CR><CR>
+set nohlsearch " Don't highlight search results
 
 " The Silver Searcher
 if executable('ag')
@@ -98,6 +93,11 @@ set shortmess+=A " Disable swap file messages
 set formatoptions-=cro " Disable comment marker on new line
 " Change end of buffer to terminal background color
 silent! set termwinkey=<C-H>
+" Detect file types
+filetype plugin indent on
+" Add new vertical split to the right or below
+set splitright
+set splitbelow
 
 """ File explorer
 let g:netrw_liststyle = 3 " File browser display preference
@@ -133,3 +133,7 @@ function! s:FindAndReplaceExact(before, after)
 endfunction
 " :Fare <word to replace> <replace with>
 command! -nargs=* Fare call s:FindAndReplaceExact(<f-args>)
+
+" JSX
+" Make opening and closing tags same color
+highlight link xmlEndTag xmlTag
