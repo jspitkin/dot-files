@@ -1,9 +1,10 @@
+" Plugins
 call plug#begin('~/.vim/plugged')
 
-Plug 'Yggdroot/indentLine'
-Plug 'google/vim-searchindex'
-Plug 'mileszs/ack.vim'
-Plug 'pangloss/vim-javascript'
+Plug 'Yggdroot/indentLine' " Indention vertical lines
+Plug 'google/vim-searchindex' " Display number of search matches
+Plug 'pangloss/vim-javascript' " Javascript indentation and syntax support
+Plug 'ajh17/VimCompletesMe'   " Tab completetion
 
 call plug#end()
 
@@ -14,14 +15,16 @@ let g:gruvbox_bold=0
 let g:gruvbox_dark_contrast="medium"
 colorscheme gruvbox
 
-""" Key mappings
+" Key mappings
 let mapleader = ","
 " Pane navigation
-nnoremap <C-L> <C-W><C-L>
+nnoremap <C-L> <C-W><C-L> 
 nnoremap <C-H> <C-W><C-H>
+nnoremap <C-J> <C-W><C-J>
+nnoremap <C-K> <C-W><C-K>
 " Buffer navigation
-nnoremap <C-J> :bnext<CR>
-nnoremap <C-K> :bprevious<CR>
+nnoremap <C-F> :bnext<CR>
+nnoremap <C-D> :bprevious<CR>
 " Scrolling to wrapped lines
 noremap j gj
 noremap k gk
@@ -35,6 +38,8 @@ map zh ZH
 nmap P :pu<CR>
 " Redo
 nnoremap U <C-R>
+" Autocomplete 
+inoremap <expr><tab> pumvisible() ? "\<c-n>" : "\<tab>"
 
 " Formatting
 set nowrap
@@ -50,7 +55,7 @@ set statusline=%y\ %.80f " Path and file type
 set statusline+=%=        " Switch to the right side
 set statusline+=Ln\ %4l\ Col\ %4c  " Line number and column number
 
-""" Searching 
+" Searching 
 set path+=**
 set wildmenu " Show list
 set wildmode=list:longest,full " Command <Tab> completion
@@ -60,20 +65,7 @@ set ignorecase " Case insensitive search
 set smartcase " Case sensitive when uppercase present
 set nohlsearch " Don't highlight search results
 
-" The Silver Searcher
-if executable('ag')
-  " Use ag over grep
-  set grepprg=ag\ --nogroup\ --nocolor
-
-  " Use ag in CtrlP for listing files. Lightning fast and respects .gitignore
-  let g:ctrlp_user_command = 'ag %s -l --nocolor -g ""'
-
-  " ag is fast enough that CtrlP doesn't need to cache
-  let g:ctrlp_use_caching = 0
-endif
-nnoremap K :Ack! "\b<C-R><C-W>\b"<CR>:cw<CR>
-
-""" Misc
+" Misc
 set wildmode=full " File explorer
 set clipboard=unnamed " Share clipboards
 set encoding=utf-8 " Text encoding
@@ -99,9 +91,13 @@ filetype plugin indent on
 set splitright
 set splitbelow
 
-""" File explorer
+" File explorer
 let g:netrw_liststyle = 3 " File browser display preference
 let g:netrw_banner = 0 " Remove file browser banner
+
+" JSX
+" Make opening and closing tags same color
+highlight link xmlEndTag xmlTag
 
 " Restore cursor to file position in previous editing session
 function! ResCur()
@@ -133,7 +129,3 @@ function! s:FindAndReplaceExact(before, after)
 endfunction
 " :Fare <word to replace> <replace with>
 command! -nargs=* Fare call s:FindAndReplaceExact(<f-args>)
-
-" JSX
-" Make opening and closing tags same color
-highlight link xmlEndTag xmlTag

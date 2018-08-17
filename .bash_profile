@@ -5,16 +5,14 @@ PATH="/Library/Frameworks/Python.framework/Versions/3.6/bin:${PATH}"
 export PATH
 # Add Visual Studio Code (code)
 export PATH="/Library/Frameworks/Python.framework/Versions/3.6/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/Library/TeX/texbin:/Library/Frameworks/Python.framework/Versions/3.6/bin:/Applications/Visual Studio Code.app/Contents/Resources/app/bin"
-export PYTHONPATH=:/Users/jsp/Downloads/testing
-
-# Added by Anaconda3 5.0.1 installer
-export PATH="/Users/jsp/anaconda3/bin:$PATH"
 
 # Color directory highlighting
 export CLICOLOR=1
 export LSCOLORS=gxfxcxdxbxegedabagacad
 
 export EDITOR=/usr/bin/vim                  # Set editor to Vim
+
+alias python='python3'                      # Alias python3
 
 shopt -s cdspell;                           # Autocorrect typos in path names when using `cd`
 
@@ -24,10 +22,6 @@ alias mv='mv -iv'                           # Prompt before overwrite
 cd() { builtin cd "$@"; ls; }               # List directory contents on cd
 alias ..='cd ../'                           # Go back 1 directory level
 alias ...='cd ../../'                       # Go back 2 directory levels
-alias .3='cd ../../../'                     # Go back 3 directory levels
-alias .4='cd ../../../../'                  # Go back 4 directory levels
-alias .5='cd ../../../../../'               # Go back 5 directory levels
-alias .6='cd ../../../../../../'            # Go back 6 directory levels
 alias ~="cd ~"                              # Go to home directory
 
 #   extract:  Extract most know archives with one command
