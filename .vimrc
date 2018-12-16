@@ -1,10 +1,11 @@
 " Plugins
 call plug#begin('~/.vim/plugged')
 
-Plug 'Yggdroot/indentLine' " Indention vertical lines
-Plug 'google/vim-searchindex' " Display number of search matches
+Plug 'Yggdroot/indentLine'     " Indention vertical lines
+Plug 'google/vim-searchindex'  " Display number of search matches
 Plug 'pangloss/vim-javascript' " Javascript indentation and syntax support
-Plug 'ajh17/VimCompletesMe'   " Tab completetion
+Plug 'fatih/vim-go'            " Go support
+Plug 'ap/vim-buftabline'       " Open buffer tabs
 
 call plug#end()
 
@@ -51,7 +52,7 @@ set tabstop=2 " Indentation every two columns
 
 " Status line
 set laststatus=2
-set statusline=%y\ %.80f " Path and file type
+set statusline=%y\ %F " Path and file type
 set statusline+=%=        " Switch to the right side
 set statusline+=Ln\ %4l\ Col\ %4c  " Line number and column number
 
@@ -63,7 +64,6 @@ set hlsearch " Highlight search terms
 set incsearch " Find as you type in search
 set ignorecase " Case insensitive search
 set smartcase " Case sensitive when uppercase present
-set nohlsearch " Don't highlight search results
 
 " Misc
 set wildmode=full " File explorer
@@ -90,6 +90,10 @@ filetype plugin indent on
 " Add new vertical split to the right or below
 set splitright
 set splitbelow
+" Clear search highlight with enter
+nnoremap <CR> :noh<CR><CR>
+" Disable buffer save warning
+set hidden
 
 " File explorer
 let g:netrw_liststyle = 3 " File browser display preference
