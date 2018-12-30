@@ -4,17 +4,29 @@ call plug#begin('~/.vim/plugged')
 Plug 'Yggdroot/indentLine'     " Indention vertical lines
 Plug 'google/vim-searchindex'  " Display number of search matches
 Plug 'pangloss/vim-javascript' " Javascript indentation and syntax support
-Plug 'fatih/vim-go'            " Go support
 Plug 'ap/vim-buftabline'       " Open buffer tabs
+Plug 'ctrlpvim/ctrlp.vim'      " Fuzzy search
+Plug 'mileszs/ack.vim'         " grep replacement
+Plug 'scrooloose/nerdtree'     " File explorer
 
 call plug#end()
 
 " Color scheme
 syntax enable
 set background=dark
-let g:gruvbox_bold=0
-let g:gruvbox_dark_contrast="medium"
-colorscheme gruvbox
+colorscheme zenburn
+" line number background
+hi LineNr ctermbg=237
+" buffer shown in current window
+hi TabLineSel ctermbg=223 ctermfg=237
+" buffer shown in other window
+hi PmenuSel ctermbg=237 ctermfg=223
+" buffer not currently visible
+hi TabLine ctermbg=237 ctermfg=223
+" buffer tabs background
+hi TabLineFill ctermbg=236
+" vertical split background
+hi VertSplit ctermbg=223 ctermfg=237
 
 " Key mappings
 let mapleader = ","
@@ -55,6 +67,8 @@ set laststatus=2
 set statusline=%y\ %F " Path and file type
 set statusline+=%=        " Switch to the right side
 set statusline+=Ln\ %4l\ Col\ %4c  " Line number and column number
+hi statusline ctermfg=174 ctermbg=237
+hi statuslineNC ctermfg=174 ctermbg=237
 
 " Searching 
 set path+=**
@@ -69,7 +83,6 @@ set smartcase " Case sensitive when uppercase present
 set wildmode=full " File explorer
 set clipboard=unnamed " Share clipboards
 set encoding=utf-8 " Text encoding
-set nu " Line numbers
 set backspace=indent,eol,start " Make backspace work normally
 set mouse=a " Enable mouse usage
 set mousehide " Hide mouse when typing
@@ -94,10 +107,17 @@ set splitbelow
 nnoremap <CR> :noh<CR><CR>
 " Disable buffer save warning
 set hidden
+" Line numbers
+set nu
 
 " File explorer
 let g:netrw_liststyle = 3 " File browser display preference
 let g:netrw_banner = 0 " Remove file browser banner
+let g:netrw_browse_split = 4 " Open file in previous window
+
+" NerdTree
+map <C-t> :NERDTreeToggle<CR>
+
 
 " JSX
 " Make opening and closing tags same color
